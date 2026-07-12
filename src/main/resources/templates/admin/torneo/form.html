@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title th:text="${torneo.id == null ? 'Nuovo torneo' : 'Modifica torneo'}">
+        Gestione torneo
+    </title>
+</head>
+
+<body>
+
+<h1 th:text="${torneo.id == null ? 'Nuovo torneo' : 'Modifica torneo'}">
+    Gestione torneo
+</h1>
+
+<form th:action="@{/admin/torneo}"
+      th:object="${torneo}"
+      method="post">
+
+    <input type="hidden" th:field="*{id}">
+
+    <div>
+        <label for="nome">Nome</label><br>
+
+        <input id="nome"
+               type="text"
+               th:field="*{nome}"
+               required>
+    </div>
+
+    <br>
+
+    <div>
+        <label for="anno">Anno</label><br>
+
+        <input id="anno"
+               type="number"
+               th:field="*{anno}"
+               min="1900"
+               max="2100"
+               required>
+    </div>
+
+    <br>
+
+    <div>
+        <label for="descrizione">Descrizione</label><br>
+
+        <textarea id="descrizione"
+                  th:field="*{descrizione}"
+                  rows="5"
+                  cols="50">
+        </textarea>
+    </div>
+
+    <br>
+
+    <fieldset>
+
+        <legend>Squadre partecipanti</legend>
+
+        <div th:if="${#lists.isEmpty(squadre)}">
+            <p>Non ci sono squadre disponibili.</p>
+        </div>
+
+        <div th:each="squadra : ${squadre}">
+
+            <input type="checkbox"
+                   th:field="*{squadre}"
+                   th:value="${squadra.id}"
+                   th:id="'squadra-' + ${squadra.id}">
+
+            <label th:for="'squadra-' + ${squadra.id}"
+                   th:text="${squadra.nome + ' - ' + squadra.citta}">
+                Squadra
+            </label>
+
+        </div>
+
+    </fieldset>
+
+    <br>
+
+    <button type="submit"
+            th:text="${torneo.id == null ? 'Salva torneo' : 'Salva modifiche'}">
+        Salva
+    </button>
+
+</form>
+
+<br>
+
+<a th:href="@{/tornei}">
+    Torna ai tornei
+</a>
+
+<br><br>
+
+<a th:href="@{/admin}">
+    Torna al pannello amministratore
+</a>
+
+</body>
+
+</html>

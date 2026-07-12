@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Lista Partite</title>
+    </head>
+    <body>
+
+    <h1>Partite</h1>
+    
+    <div th:if="${isAdmin}">
+        <a th:href="@{/admin/partita/form}">
+            Registra nuova partita
+        </a>
+    </div>
+    
+    <a th:href="@{/}">Home</a>
+
+    <ul>
+        <li th:each="partita : ${partite}">
+            <a th:href="@{/partite/{id}(id=${partita.id})}"
+            th:text="${partita.squadraCasa.nome} + ' - ' + ${partita.squadraTrasferta.nome}">
+            </a>
+        </li>
+    </ul>
+
+    </body>
+</html>

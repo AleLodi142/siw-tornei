@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Dettaglio torneo</title>
+</head>
+
+<body>
+
+    <h1 th:text="${torneo.nome}">
+        Nome torneo
+    </h1>
+
+    <p>
+        <strong>Anno:</strong>
+        <span th:text="${torneo.anno}"></span>
+    </p>
+
+    <p>
+        <strong>Descrizione:</strong>
+        <span th:text="${torneo.descrizione}"></span>
+    </p>
+
+    <h2>Squadre partecipanti</h2>
+
+    <ul>
+        <li th:each="squadra : ${torneo.squadre}">
+            <a th:href="@{/squadre/{id}(id=${squadra.id})}"
+               th:text="${squadra.nome}">
+                Squadra
+            </a>
+        </li>
+    </ul>
+
+    <p>
+        <a th:href="@{/tornei/{id}/calendario(id=${torneo.id})}">
+            Calendario
+        </a>
+    </p>
+
+    <p>
+        <a th:href="@{/tornei/{id}/classifica(id=${torneo.id})}">
+            Classifica
+        </a>
+    </p>
+
+    <div th:if="${isAdmin}">
+
+        <h2>Gestione amministratore</h2>
+
+        <p>
+            <a th:href="@{/admin/torneo/{id}/edit(id=${torneo.id})}">
+                Modifica torneo
+            </a>
+        </p>
+
+        <form th:action="@{/admin/torneo/{id}/delete(id=${torneo.id})}"
+              method="post">
+
+            <button type="submit">
+                Elimina torneo
+            </button>
+
+        </form>
+
+    </div>
+
+    <br>
+
+    <a th:href="@{/tornei}">
+        Torna ai tornei
+    </a>
+
+</body>
+
+</html>

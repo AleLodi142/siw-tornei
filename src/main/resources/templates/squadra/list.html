@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Lista Squadre</title>
+    </head>
+    <body>
+
+    <h1>Squadre</h1>
+
+    <div th:if="${isAdmin}">
+        <a th:href="@{/admin/squadra/form}">
+            Inserisci nuova squadra
+        </a>
+    </div>
+
+    <a th:href="@{/}">Home</a>
+
+    <ul>
+        <li th:each="squadra : ${squadre}">
+            <a th:href="@{/squadre/{id}(id=${squadra.id})}"
+            th:text="${squadra.nome} + ' - ' + ${squadra.citta}">
+            </a>
+        </li>
+    </ul>
+
+    </body>
+</html>

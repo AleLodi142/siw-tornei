@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Registrazione completata</title>
+</head>
+
+<body>
+
+    <h1>Registrazione completata!</h1>
+
+    <p>
+        Il tuo account è stato creato correttamente.
+    </p>
+
+    <p>
+        Ora puoi effettuare il login.
+    </p>
+
+    <br>
+
+   <a th:href="@{/login}">
+    <button type="button">Accedi</button>
+    </a>
+
+    <br><br>
+
+    <a th:href="@{/}">
+        Torna alla Home
+    </a>
+
+</body>
+
+</html>

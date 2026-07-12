@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Dettaglio Arbitro</title>
+    </head>
+    <body>
+
+    <h1 th:text="${arbitro.nome} + ' ' + ${arbitro.cognome}">Arbitro</h1>
+
+    <p>
+        <strong>Codice arbitrale:</strong>
+        <span th:text="${arbitro.codiceArbitrale}"></span>
+    </p>
+
+    <h2>Partite arbitrate</h2>
+
+    <ul>
+        <li th:each="partita : ${arbitro.partite}">
+            <a th:href="@{/partite/{id}(id=${partita.id})}"
+            th:text="${partita.squadraCasa.nome} + ' - ' + ${partita.squadraTrasferta.nome}">
+            </a>
+        </li>
+    </ul>
+
+    <div th:if="${isAdmin}">
+
+        <h2>Gestione amministratore</h2>
+
+        <p>
+            <a th:href="@{/admin/arbitro/{id}/edit(id=${arbitro.id})}">
+                Modifica arbitro
+            </a>
+        </p>
+
+        <form th:action="@{/admin/arbitro/{id}/delete(id=${arbitro.id})}"
+            method="post">
+
+            <button type="submit">
+                Elimina arbitro
+            </button>
+
+        </form>
+
+    </div>
+
+    <a th:href="@{/arbitri}">Torna agli arbitri</a>
+
+    </body>
+</html>

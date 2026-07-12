@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>SIW Tornei</title>
+    </head>
+    <body>
+
+        <h1>Gestione Tornei di Calcio</h1>
+
+        <ul>
+            <li><a th:href="@{/tornei}">Tornei</a></li>
+            <li><a th:href="@{/squadre}">Squadre</a></li>
+            <li><a th:href="@{/giocatori}">Giocatori</a></li>
+            <li><a th:href="@{/partite}">Partite</a></li>
+            <li><a th:href="@{/arbitri}">Arbitri</a></li>
+        </ul>
+
+        <div th:if="${!authenticated}">
+            <a th:href="@{/login}">Login</a>
+            <a th:href="@{/register}">Registrati</a>
+        </div>
+
+        <div th:if="${authenticated}">
+            <p th:text="'Benvenuto, ' + ${username}"></p>
+
+            <form th:action="@{/logout}" method="post">
+                <button type="submit">Logout</button>
+            </form>
+        </div>
+    </body>
+</html>

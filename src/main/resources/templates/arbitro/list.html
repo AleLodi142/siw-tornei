@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Lista Arbitri</title>
+    </head>
+    <body>
+
+    <h1>Arbitri</h1>
+
+    <div th:if="${isAdmin}">
+        <a th:href="@{/admin/arbitro/form}">
+            Inserisci nuovo arbitro
+        </a>
+    </div>
+    
+    <a th:href="@{/}">Home</a>
+
+    <ul>
+        <li th:each="arbitro : ${arbitri}">
+            <a th:href="@{/arbitri/{id}(id=${arbitro.id})}"
+            th:text="${arbitro.nome} + ' ' + ${arbitro.cognome}">
+            </a>
+        </li>
+    </ul>
+
+    </body>
+</html>

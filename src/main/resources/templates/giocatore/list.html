@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Lista Giocatori</title>
+    </head>
+    <body>
+
+    <h1>Giocatori</h1>
+    
+    <div th:if="${isAdmin}">
+        <a th:href="@{/admin/giocatore/form}">
+            Inserisci nuovo giocatore
+        </a>
+    </div>
+    
+    <a th:href="@{/}">Home</a>
+
+    <ul>
+        <li th:each="giocatore : ${giocatori}">
+            <a th:href="@{/giocatori/{id}(id=${giocatore.id})}"
+            th:text="${giocatore.nome} + ' ' + ${giocatore.cognome}">
+            </a>
+        </li>
+    </ul>
+
+    </body>
+    </html>

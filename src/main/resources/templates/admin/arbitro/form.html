@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title th:text="${arbitro.id == null ? 'Nuovo arbitro' : 'Modifica arbitro'}">
+        Gestione arbitro
+    </title>
+</head>
+
+<body>
+
+<h1 th:text="${arbitro.id == null ? 'Nuovo arbitro' : 'Modifica arbitro'}">
+    Gestione arbitro
+</h1>
+
+<div th:if="${errore != null}">
+    <p th:text="${errore}"></p>
+</div>
+
+<form th:action="@{/admin/arbitro}"
+      th:object="${arbitro}"
+      method="post">
+
+    <input type="hidden" th:field="*{id}">
+
+    <div>
+        <label for="nome">Nome</label><br>
+
+        <input id="nome"
+               type="text"
+               th:field="*{nome}"
+               required>
+    </div>
+
+    <br>
+
+    <div>
+        <label for="cognome">Cognome</label><br>
+
+        <input id="cognome"
+               type="text"
+               th:field="*{cognome}"
+               required>
+    </div>
+
+    <br>
+
+    <div>
+        <label for="codiceArbitrale">Codice arbitrale</label><br>
+
+        <input id="codiceArbitrale"
+               type="text"
+               th:field="*{codiceArbitrale}"
+               required>
+    </div>
+
+    <br>
+
+    <button type="submit"
+            th:text="${arbitro.id == null ? 'Salva arbitro' : 'Salva modifiche'}">
+        Salva
+    </button>
+
+</form>
+
+<br>
+
+<a th:href="@{/arbitri}">
+    Torna agli arbitri
+</a>
+
+<br><br>
+
+<a th:href="@{/admin}">
+    Torna al pannello amministratore
+</a>
+
+</body>
+
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Pannello Amministratore</title>
+</head>
+
+<body>
+
+    <h1>Pannello Amministratore</h1>
+
+    <p>Da questa pagina puoi gestire i dati del sistema.</p>
+
+    <ul>
+        <li>
+            <a th:href="@{/admin/torneo/form}">
+                Crea nuovo torneo
+            </a>
+        </li>
+
+        <li>
+            <a th:href="@{/admin/squadra/form}">
+                Inserisci nuova squadra
+            </a>
+        </li>
+
+        <li>
+            <a th:href="@{/admin/giocatore/form}">
+                Inserisci nuovo giocatore
+            </a>
+        </li>
+
+        <li>
+            <a th:href="@{/admin/partita/form}">
+                Registra nuova partita
+            </a>
+        </li>
+
+        <li>
+            <a th:href="@{/admin/arbitro/form}">
+                Inserisci nuovo arbitro
+            </a>
+        </li>
+    </ul>
+
+    <p>
+        <a th:href="@{/}">
+            Torna alla Home
+        </a>
+    </p>
+
+</body>
+
+</html>

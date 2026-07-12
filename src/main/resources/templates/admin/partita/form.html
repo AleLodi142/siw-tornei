@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title th:text="${partita.id == null
+            ? 'Nuova partita'
+            : 'Modifica partita'}">
+        Gestione partita
+    </title>
+</head>
+
+<body>
+
+<h1 th:text="${partita.id == null
+        ? 'Nuova partita'
+        : 'Modifica partita'}">
+    Gestione partita
+</h1>
+
+<!-- Messaggio di errore proveniente dal controller -->
+
+<div th:if="${errore != null}">
+    <p th:text="${errore}"></p>
+</div>
+
+<form th:action="@{/admin/partita}"
+      th:object="${partita}"
+      method="post">
+
+    <!-- Se presente, consente di aggiornare la partita esistente -->
+
+    <input type="hidden" th:field="*{id}">
+
+    <!-- Torneo -->
+
+    <div>
+        <label for="torneo">Torneo</label><br>
+
+        <select id="torneo"
+                th:field="*{torneo}"
+                required>
+
+            <option value="">
+                Seleziona un torneo
+            </option>
+
+            <option th:each="torneo : ${tornei}"
+                    th:value="${torneo.id}"
+                    th:text="${torneo.nome}">
+                Torneo
+            </option>
+
+        </select>
+    </div>
+
+    <br>
+
+    <!-- Squadra di casa -->
+
+    <div>
+        <label for="squadraCasa">
+            Squadra di casa
+        </label><br>
+
+        <select id="squadraCasa"
+                th:field="*{squadraCasa}"
+                required>
+
+            <option value="">
+                Seleziona la squadra di casa
+            </option>
+
+            <option th:each="squadra : ${squadre}"
+                    th:value="${squadra.id}"
+                    th:text="${squadra.nome}">
+                Squadra
+            </option>
+
+        </select>
+    </div>
+
+    <br>
+
+    <!-- Squadra in trasferta -->
+
+    <div>
+        <label for="squadraTrasferta">
+            Squadra in trasferta
+        </label><br>
+
+        <select id="squadraTrasferta"
+                th:field="*{squadraTrasferta}"
+                required>
+
+            <option value="">
+                Seleziona la squadra in trasferta
+            </option>
+
+            <option th:each="squadra : ${squadre}"
+                    th:value="${squadra.id}"
+                    th:text="${squadra.nome}">
+                Squadra
+            </option>
+
+        </select>
+    </div>
+
+    <br>
+
+    <!-- Arbitro -->
+
+    <div>
+        <label for="arbitro">Arbitro</label><br>
+
+        <select id="arbitro"
+                th:field="*{arbitro}"
+                required>
+
+            <option value="">
+                Seleziona un arbitro
+            </option>
+
+            <option th:each="arbitro : ${arbitri}"
+                    th:value="${arbitro.id}"
+                    th:text="${arbitro.nome + ' ' + arbitro.cognome}">
+                Arbitro
+            </option>
+
+        </select>
+    </div>
+
+    <br>
+
+    <!-- Data e ora -->
+
+    <div>
+        <label for="dataOra">
+            Data e ora
+        </label><br>
+
+        <input id="dataOra"
+               type="datetime-local"
+               th:field="*{dataOra}"
+               required>
+    </div>
+
+    <br>
+
+    <!-- Luogo -->
+
+    <div>
+        <label for="luogo">Luogo</label><br>
+
+        <input id="luogo"
+               type="text"
+               th:field="*{luogo}"
+               required>
+    </div>
+
+    <br>
+
+    <!-- Stato -->
+
+    <div>
+        <label for="stato">
+            Stato della partita
+        </label><br>
+
+        <select id="stato"
+                th:field="*{stato}"
+                required>
+
+            <option value="">
+                Seleziona lo stato
+            </option>
+
+            <option value="SCHEDULED">
+                Da giocare
+            </option>
+
+            <option value="PLAYED">
+                Giocata
+            </option>
+
+        </select>
+    </div>
+
+    <br>
+
+    <!-- Gol squadra di casa -->
+
+    <div>
+        <label for="goalsHome">
+            Gol squadra di casa
+        </label><br>
+
+        <input id="goalsHome"
+               type="number"
+               th:field="*{goalsHome}"
+               min="0">
+    </div>
+
+    <br>
+
+    <!-- Gol squadra in trasferta -->
+
+    <div>
+        <label for="goalsAway">
+            Gol squadra in trasferta
+        </label><br>
+
+        <input id="goalsAway"
+               type="number"
+               th:field="*{goalsAway}"
+               min="0">
+    </div>
+
+    <br>
+
+    <button type="submit"
+            th:text="${partita.id == null
+                    ? 'Salva partita'
+                    : 'Salva modifiche'}">
+        Salva
+    </button>
+
+</form>
+
+<br>
+
+<a th:href="@{/partite}">
+    Torna alle partite
+</a>
+
+<br><br>
+
+<a th:href="@{/admin}">
+    Torna al pannello amministratore
+</a>
+
+</body>
+</html>

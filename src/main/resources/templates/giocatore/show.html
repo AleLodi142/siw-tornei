@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Dettaglio Giocatore</title>
+    </head>
+    <body>
+
+    <h1 th:text="${giocatore.nome} + ' ' + ${giocatore.cognome}">Giocatore</h1>
+
+    <p><strong>Ruolo:</strong> <span th:text="${giocatore.ruolo}"></span></p>
+    <p><strong>Data di nascita:</strong> <span th:text="${giocatore.dataNascita}"></span></p>
+    <p><strong>Altezza:</strong> <span th:text="${giocatore.altezza}"></span></p>
+
+    <p>
+        <strong>Squadra:</strong>
+        <a th:href="@{/squadre/{id}(id=${giocatore.squadra.id})}"
+        th:text="${giocatore.squadra.nome}">
+        </a>    
+    </p>
+
+    <div th:if="${isAdmin}">
+
+        <h2>Gestione amministratore</h2>
+
+        <p>
+            <a th:href="@{/admin/giocatore/{id}/edit(id=${giocatore.id})}">
+                Modifica giocatore
+            </a>
+        </p>
+
+        <form th:action="@{/admin/giocatore/{id}/delete(id=${giocatore.id})}"
+            method="post">
+
+            <button type="submit">
+                Elimina giocatore
+            </button>
+
+        </form>
+
+    </div>
+
+    <a th:href="@{/giocatori}">Torna ai giocatori</a>
+
+    </body>
+</html>

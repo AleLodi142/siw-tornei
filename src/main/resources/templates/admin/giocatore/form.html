@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title th:text="${giocatore.id == null ? 'Nuovo giocatore' : 'Modifica giocatore'}">
+        Gestione giocatore
+    </title>
+</head>
+
+<body>
+
+<h1 th:text="${giocatore.id == null ? 'Nuovo giocatore' : 'Modifica giocatore'}">
+    Gestione giocatore
+</h1>
+
+<div th:if="${errore != null}">
+    <p th:text="${errore}"></p>
+</div>
+
+<form th:action="@{/admin/giocatore}"
+      th:object="${giocatore}"
+      method="post">
+
+    <input type="hidden" th:field="*{id}">
+
+    <div>
+        <label for="nome">Nome</label><br>
+
+        <input id="nome"
+               type="text"
+               th:field="*{nome}"
+               required>
+    </div>
+
+    <br>
+
+    <div>
+        <label for="cognome">Cognome</label><br>
+
+        <input id="cognome"
+               type="text"
+               th:field="*{cognome}"
+               required>
+    </div>
+
+    <br>
+
+    <div>
+        <label for="dataNascita">Data di nascita</label><br>
+
+        <input id="dataNascita"
+               type="date"
+               th:field="*{dataNascita}"
+               required>
+    </div>
+
+    <br>
+
+    <div>
+        <label for="ruolo">Ruolo</label><br>
+
+        <select id="ruolo"
+                th:field="*{ruolo}"
+                required>
+
+            <option value="">
+                Seleziona un ruolo
+            </option>
+
+            <option value="Portiere">
+                Portiere
+            </option>
+
+            <option value="Difensore">
+                Difensore
+            </option>
+
+            <option value="Centrocampista">
+                Centrocampista
+            </option>
+
+            <option value="Attaccante">
+                Attaccante
+            </option>
+
+        </select>
+    </div>
+
+    <br>
+
+    <div>
+        <label for="altezza">Altezza in metri</label><br>
+
+        <input id="altezza"
+               type="number"
+               th:field="*{altezza}"
+               min="1.20"
+               max="2.30"
+               step="0.01"
+               required>
+    </div>
+
+    <br>
+
+    <div>
+        <label for="squadra">Squadra</label><br>
+
+        <select id="squadra"
+                th:field="*{squadra}"
+                required>
+
+            <option value="">
+                Seleziona una squadra
+            </option>
+
+            <option th:each="squadra : ${squadre}"
+                    th:value="${squadra.id}"
+                    th:text="${squadra.nome}">
+                Squadra
+            </option>
+
+        </select>
+    </div>
+
+    <br>
+
+    <button type="submit"
+            th:text="${giocatore.id == null ? 'Salva giocatore' : 'Salva modifiche'}">
+        Salva
+    </button>
+
+</form>
+
+<br>
+
+<a th:href="@{/giocatori}">
+    Torna ai giocatori
+</a>
+
+<br><br>
+
+<a th:href="@{/admin}">
+    Torna al pannello amministratore
+</a>
+
+</body>
+
+</html>

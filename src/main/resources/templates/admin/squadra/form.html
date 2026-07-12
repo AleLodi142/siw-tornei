@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title th:text="${squadra.id == null ? 'Nuova squadra' : 'Modifica squadra'}">
+        Gestione squadra
+    </title>
+</head>
+
+<body>
+
+<h1 th:text="${squadra.id == null ? 'Nuova squadra' : 'Modifica squadra'}"></h1>
+
+<form th:action="@{/admin/squadra}"
+      th:object="${squadra}"
+      method="post">
+
+    <input type="hidden" th:field="*{id}">
+
+    <div>
+        <label>Nome</label><br>
+        <input type="text" th:field="*{nome}" required>
+    </div>
+
+    <br>
+
+    <div>
+        <label>Città</label><br>
+        <input type="text" th:field="*{citta}" required>
+    </div>
+
+    <br>
+
+    <div>
+        <label>Anno di fondazione</label><br>
+        <input type="number"
+               th:field="*{annoFondazione}"
+               min="1850"
+               max="2100"
+               required>
+    </div>
+
+    <br>
+
+    <button type="submit"
+            th:text="${squadra.id == null ? 'Salva squadra' : 'Aggiorna squadra'}">
+    </button>
+
+</form>
+
+<br>
+
+<a th:href="@{/squadre}">
+    Torna alle squadre
+</a>
+
+</body>
+
+</html>

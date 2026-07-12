@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Calendario Torneo</title>
+    </head>
+    <body>
+
+    <h1>Calendario</h1>
+
+    <h2 th:text="${torneo.nome}">Nome torneo</h2>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Data e ora</th>
+                <th>Luogo</th>
+                <th>Squadra casa</th>
+                <th>Squadra trasferta</th>
+                <th>Risultato</th>
+                <th>Stato</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="partita : ${partite}">
+                <td th:text="${partita.dataOra}"></td>
+                <td th:text="${partita.luogo}"></td>
+                <td th:text="${partita.squadraCasa.nome}"></td>
+                <td th:text="${partita.squadraTrasferta.nome}"></td>
+                <td>
+                    <span th:if="${partita.stato == 'PLAYED'}"
+                        th:text="${partita.goalsHome} + ' - ' + ${partita.goalsAway}">
+                    </span>
+                    <span th:if="${partita.stato == 'SCHEDULED'}">Da giocare</span>
+                </td>
+                <td th:text="${partita.stato}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>
+        <a th:href="@{/tornei/{id}(id=${torneo.id})}">Torna al torneo</a>
+    </p>
+
+    </body>
+</html>

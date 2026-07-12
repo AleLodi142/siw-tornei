@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Dettaglio Partita</title>
+
+    <link
+        rel="stylesheet"
+        th:href="@{/react-commenti/commenti.css}"
+    >
+</head>
+
+<body>
+
+    <h1>
+        <span
+            th:text="${partita.squadraCasa.nome}">
+        </span>
+
+        -
+
+        <span
+            th:text="${partita.squadraTrasferta.nome}">
+        </span>
+    </h1>
+
+    <p>
+        <strong>Data e ora:</strong>
+
+        <span
+            th:text="${partita.dataOra}">
+        </span>
+    </p>
+
+    <p>
+        <strong>Luogo:</strong>
+
+        <span
+            th:text="${partita.luogo}">
+        </span>
+    </p>
+
+    <p>
+        <strong>Stato:</strong>
+
+        <span
+            th:text="${partita.stato}">
+        </span>
+    </p>
+
+    <p>
+        <strong>Risultato:</strong>
+
+        <span
+            th:text="${partita.goalsHome}">
+        </span>
+
+        -
+
+        <span
+            th:text="${partita.goalsAway}">
+        </span>
+    </p>
+
+    <p>
+        <strong>Torneo:</strong>
+
+        <a
+            th:href="@{/tornei/{id}
+                (id=${partita.torneo.id})}"
+            th:text="${partita.torneo.nome}">
+        </a>
+    </p>
+
+    <p>
+        <strong>Arbitro:</strong>
+
+        <span
+            th:text="${partita.arbitro.nome}
+                + ' '
+                + ${partita.arbitro.cognome}">
+        </span>
+    </p>
+
+    <div th:if="${isAdmin}">
+
+        <h2>Gestione amministratore</h2>
+
+        <p>
+            <a
+                th:href="@{/admin/partita/{id}/edit
+                    (id=${partita.id})}">
+                Modifica partita o risultato
+            </a>
+        </p>
+
+        <form
+            th:action="@{/admin/partita/{id}/delete
+                (id=${partita.id})}"
+            method="post">
+
+            <button type="submit">
+                Elimina partita
+            </button>
+
+        </form>
+
+    </div>
+
+    <hr>
+
+    <!--
+        Thymeleaf inserisce nel data attribute
+        l'id reale della partita.
+        React legge questo valore da main.tsx.
+    -->
+    <div
+        id="react-commenti"
+        th:attr="data-partita-id=${partita.id}">
+    </div>
+
+    <script
+        type="module"
+        th:src="@{/react-commenti/commenti.js}">
+    </script>
+
+    <hr>
+
+    <a th:href="@{/partite}">
+        Torna alle partite
+    </a>
+
+</body>
+</html>
