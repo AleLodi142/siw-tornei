@@ -16,6 +16,7 @@ public class Squadra {
     private Integer annoFondazione;
 
     private String citta;
+    
 
     @ManyToMany(mappedBy = "squadre")
     private List<Torneo> tornei;
