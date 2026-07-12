@@ -1,27 +1,218 @@
 <!DOCTYPE html>
+
 <html xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <title>Lista Giocatori</title>
-    </head>
-    <body>
+
+<head>
+    <meta charset="UTF-8">
+
+    <title>Lista Giocatori</title>
+</head>
+
+<body>
 
     <h1>Giocatori</h1>
-    
+
     <div th:if="${isAdmin}">
         <a th:href="@{/admin/giocatore/form}">
             Inserisci nuovo giocatore
         </a>
     </div>
-    
-    <a th:href="@{/}">Home</a>
 
-    <ul>
-        <li th:each="giocatore : ${giocatori}">
-            <a th:href="@{/giocatori/{id}(id=${giocatore.id})}"
-            th:text="${giocatore.nome} + ' ' + ${giocatore.cognome}">
+    <br>
+
+    <a th:href="@{/}">
+        Home
+    </a>
+
+    <hr>
+
+    <!-- FORM DI RICERCA E FILTRO -->
+    <form th:action="@{/giocatori}" method="get">
+
+        <!-- Barra per cercare nome oppure cognome -->
+        <label for="testo">
+            Nome o cognome:
+        </label>
+
+        <input
+            type="text"
+            id="testo"
+            name="testo"
+            th:value="${testo}"
+            placeholder="Cerca un giocatore">
+
+        <!-- Menu a tendina per scegliere il ruolo -->
+        <label for="ruolo">
+            Ruolo:
+        </label>
+
+        <select id="ruolo" name="ruolo">
+
+            <!-- Nessun filtro sul ruolo -->
+            <option value="">
+                Tutti i ruoli
+            </option>
+
+            <!--
+                Le opzioni vengono generate usando
+                i ruoli presenti nel database.
+            -->
+            <option
+                th:each="ruolo : ${ruoli}"
+                th:value="${ruolo}"
+                th:text="${ruolo}"
+                th:selected="${ruolo == ruoloSelezionato}">
+            </option>
+
+        </select>
+
+        <!--
+            Quando viene eseguita una nuova ricerca,
+            si riparte sempre dalla prima pagina.
+        -->
+        <input type="hidden" name="page" value="0">
+
+        <!-- Manteniamo 5 elementi per pagina -->
+        <input type="hidden"
+               name="size"
+               th:value="${paginaGiocatori.size}">
+
+        <button type="submit">
+            Cerca
+        </button>
+
+        <!--
+            Questo collegamento elimina ricerca e filtro,
+            tornando all'elenco completo.
+        -->
+        <a th:href="@{/giocatori}">
+            Azzera filtri
+        </a>
+
+    </form>
+
+    <hr>
+
+    <!-- Nessun giocatore trovato -->
+    <p th:if="${paginaGiocatori.empty}">
+
+        Nessun giocatore trovato.
+
+    </p>
+
+    <!-- Elenco giocatori della pagina corrente -->
+    <ul th:unless="${paginaGiocatori.empty}">
+
+        <li th:each="giocatore :
+                     ${paginaGiocatori.content}">
+
+            <a th:href="@{/giocatori/{id}
+                         (id=${giocatore.id})}"
+               th:text="${giocatore.nome
+                         + ' '
+                         + giocatore.cognome}">
+
+                Nome giocatore
+
             </a>
+
+            <!-- Mostriamo anche il ruolo -->
+            <span th:if="${giocatore.ruolo != null}"
+                  th:text="${' - ' + giocatore.ruolo}">
+            </span>
+
         </li>
+
     </ul>
 
-    </body>
-    </html>
+    <!-- PAGINAZIONE -->
+    <nav th:if="${paginaGiocatori.totalPages > 1}">
+
+        <!-- Pagina precedente -->
+        <a th:if="${paginaGiocatori.hasPrevious()}"
+           th:href="@{/giocatori(
+                testo=${testo},
+                ruolo=${ruoloSelezionato},
+                page=${paginaGiocatori.number - 1},
+                size=${paginaGiocatori.size}
+           )}">
+
+            Precedente
+
+        </a>
+
+        <!-- Numeri delle pagine -->
+        <span th:each="numeroPagina :
+                       ${#numbers.sequence(
+                           0,
+                           paginaGiocatori.totalPages - 1
+                       )}">
+
+            <!-- Pagina corrente non cliccabile -->
+            <strong
+                th:if="${numeroPagina ==
+                         paginaGiocatori.number}"
+                th:text="${numeroPagina + 1}">
+
+                1
+
+            </strong>
+
+            <!-- Altre pagine cliccabili -->
+            <a th:unless="${numeroPagina ==
+                           paginaGiocatori.number}"
+               th:href="@{/giocatori(
+                    testo=${testo},
+                    ruolo=${ruoloSelezionato},
+                    page=${numeroPagina},
+                    size=${paginaGiocatori.size}
+               )}"
+               th:text="${numeroPagina + 1}">
+
+                1
+
+            </a>
+
+        </span>
+
+        <!-- Pagina successiva -->
+        <a th:if="${paginaGiocatori.hasNext()}"
+           th:href="@{/giocatori(
+                testo=${testo},
+                ruolo=${ruoloSelezionato},
+                page=${paginaGiocatori.number + 1},
+                size=${paginaGiocatori.size}
+           )}">
+
+            Successiva
+
+        </a>
+
+    </nav>
+
+    <!-- Informazioni sui risultati -->
+    <p th:unless="${paginaGiocatori.empty}">
+
+        Pagina
+
+        <span th:text="${paginaGiocatori.number + 1}">
+            1
+        </span>
+
+        di
+
+        <span th:text="${paginaGiocatori.totalPages}">
+            1
+        </span>
+
+        — Giocatori trovati:
+
+        <span th:text="${paginaGiocatori.totalElements}">
+            0
+        </span>
+
+    </p>
+
+</body>
+
+</html>
