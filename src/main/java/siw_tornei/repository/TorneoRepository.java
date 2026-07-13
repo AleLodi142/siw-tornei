@@ -16,4 +16,6 @@ public interface TorneoRepository extends CrudRepository<Torneo, Long> {
            WHERE t.id = :id
            """)          
     Optional<Torneo> findByIdWithSquadre(Long id);
+
+    boolean existsBySquadreId(Long squadraId);
 }

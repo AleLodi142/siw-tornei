@@ -47,8 +47,20 @@ public class SquadraController {
     }
 
     @PostMapping("/admin/squadra/{id}/delete")
-    public String deleteSquadra(@PathVariable Long id) {
-        squadraService.deleteById(id);
-        return "redirect:/squadre";
+    public String deleteSquadra(@PathVariable Long id,Model model) {
+
+        try {
+
+            squadraService.deleteById(id);
+
+            return "redirect:/squadre";
+
+        } catch (IllegalStateException exception) {
+
+            model.addAttribute("errore",exception.getMessage());
+            model.addAttribute("squadre", squadraService.findAll());
+
+            return "squadra/list";
+        }
     }
 }

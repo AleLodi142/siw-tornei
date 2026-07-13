@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import siw_tornei.model.Torneo;
+import siw_tornei.repository.PartitaRepository;
 import siw_tornei.repository.TorneoRepository;
 
 @Service
@@ -11,9 +12,11 @@ import siw_tornei.repository.TorneoRepository;
 public class TorneoService {
 
     private TorneoRepository torneoRepository;
+    private PartitaRepository partitaRepository;
 
-    public TorneoService(TorneoRepository torneoRepository) {
+    public TorneoService(TorneoRepository torneoRepository, PartitaRepository partitaRepository) {
         this.torneoRepository = torneoRepository;
+        this.partitaRepository = partitaRepository;
     }
 
     public Iterable<Torneo> findAll() {
@@ -36,7 +39,21 @@ public class TorneoService {
 
     @Transactional
     public void deleteById(Long id) {
-        torneoRepository.deleteById(id);    
+
+        Torneo torneo = findById(id);
+
+        boolean contienePartite = partitaRepository.existsByTorneoId(id);
+
+        if (contienePartite) {
+
+            throw new IllegalStateException(
+                    "Il torneo "
+                    + torneo.getNome()
+                    + " non può essere eliminato perché "
+                    + "contiene delle partite."
+            );
+        }
+        torneoRepository.deleteById(id);
     }
 
     @Transactional(readOnly = true)
@@ -50,9 +67,9 @@ public class TorneoService {
     @Transactional(readOnly = true)
     public void testFetch(Long id) {
 
-    Torneo torneo = this.findByIdWithSquadre(id);
+        Torneo torneo = this.findByIdWithSquadre(id);
 
-    torneo.getSquadre().size();
-}
+        torneo.getSquadre().size();
+    }
 
 }

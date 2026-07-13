@@ -9,6 +9,14 @@
 
     <h1>Tornei</h1>
 
+    <p
+        th:if="${errore}"
+        th:text="${errore}"
+        style="color: red;">
+
+        Impossibile eliminare il torneo
+    </p>
+
     <div th:if="${isAdmin}">
         <a th:href="@{/admin/torneo/form}">
             Crea nuovo torneo

@@ -8,4 +8,8 @@ import siw_tornei.model.Partita;
 public interface PartitaRepository extends JpaRepository<Partita, Long> {
     
     List<Partita> findByTorneoIdOrderByDataOra(Long torneoId);
+
+    boolean existsBySquadraCasaIdOrSquadraTrasfertaId(Long squadraCasaId, Long squadraTrasfertaId);
+
+    boolean existsByTorneoId(Long torneoId);
 }

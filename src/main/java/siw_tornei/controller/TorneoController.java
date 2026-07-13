@@ -57,10 +57,7 @@ public String getTorneo(
     @GetMapping("/tornei/{id}/classifica")
     public String getClassifica(@PathVariable Long id, Model model) {
         model.addAttribute("torneo", torneoService.findById(id));
-        model.addAttribute(
-                "classifica",
-                classificaService.calcolaClassifica(id)
-        );
+        model.addAttribute("classifica",classificaService.calcolaClassifica(id));
 
         return "torneo/classifica";
     }
@@ -84,26 +81,29 @@ public String getTorneo(
     }
 
     @GetMapping("/admin/torneo/{id}/edit")
-    public String formEditTorneo(
-            @PathVariable Long id,
-            Model model) {
+    public String formEditTorneo(@PathVariable Long id, Model model) {
 
-        model.addAttribute(
-                "torneo",
-                torneoService.findById(id)
-        );
-
-        model.addAttribute(
-                "squadre",
-                squadraService.findAll()
-        );
+        model.addAttribute("torneo", torneoService.findById(id));
+        model.addAttribute("squadre", squadraService.findAll());
 
         return "admin/torneo/form";
     }
 
     @PostMapping("/admin/torneo/{id}/delete")
-    public String deleteTorneo(@PathVariable Long id) {
-        torneoService.deleteById(id);
-        return "redirect:/tornei";
+    public String deleteTorneo(@PathVariable Long id, Model model) {
+
+        try {
+
+            torneoService.deleteById(id);
+
+            return "redirect:/tornei";
+
+        } catch (IllegalStateException exception) {
+
+            model.addAttribute("errore", exception.getMessage());
+            model.addAttribute("tornei", torneoService.findAll());
+
+            return "torneo/list";
+        }
     }
 }
