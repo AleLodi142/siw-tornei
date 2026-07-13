@@ -7,6 +7,14 @@
 
     <h1>Partite</h1>
     
+    <p
+        th:if="${errore}"
+        th:text="${errore}"
+        style="color: red;">
+
+        Impossibile eliminare la partita.
+    </p>
+
     <div th:if="${isAdmin}">
         <a th:href="@{/admin/partita/form}">
             Registra nuova partita
@@ -14,8 +22,11 @@
     </div>
     
     <a th:href="@{/}">Home</a>
+    <p th:if="${#lists.isEmpty(partite)}">
+        Non ci sono partite.
+    </p>
 
-    <ul>
+    <ul th:unless="${#lists.isEmpty(partite)}">
         <li th:each="partita : ${partite}">
             <a th:href="@{/partite/{id}(id=${partita.id})}"
             th:text="${partita.squadraCasa.nome} + ' - ' + ${partita.squadraTrasferta.nome}">

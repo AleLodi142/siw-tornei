@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import siw_tornei.model.Partita;
 import siw_tornei.model.Torneo;
+import siw_tornei.repository.CommentoRepository;
 import siw_tornei.repository.PartitaRepository;
 import siw_tornei.repository.TorneoRepository;
 
@@ -16,11 +17,11 @@ public class PartitaService {
 
     private PartitaRepository partitaRepository;
     private TorneoRepository torneoRepository;
+    private CommentoRepository commentoRepository;
 
-    public PartitaService(
-            PartitaRepository partitaRepository,
-            TorneoRepository torneoRepository) {
+    public PartitaService(PartitaRepository partitaRepository, TorneoRepository torneoRepository, CommentoRepository commentoRepository) {
 
+        this.commentoRepository = commentoRepository;
         this.partitaRepository = partitaRepository;
         this.torneoRepository = torneoRepository;
     }
@@ -43,7 +44,6 @@ public class PartitaService {
     @Transactional
     public Partita save(Partita partita) {
 
-        /* Controllo torneo */
 
         if (partita.getTorneo() == null ||
                 partita.getTorneo().getId() == null) {
@@ -53,7 +53,7 @@ public class PartitaService {
             );
         }
 
-        /* Recupero dal database il torneo completo */
+       
 
         Torneo torneo = torneoRepository
                 .findById(partita.getTorneo().getId())
@@ -62,7 +62,7 @@ public class PartitaService {
                                 "Il torneo selezionato non esiste"
                         ));
 
-        /* Controllo squadre */
+        
 
         if (partita.getSquadraCasa() == null ||
                 partita.getSquadraCasa().getId() == null ||
@@ -86,7 +86,6 @@ public class PartitaService {
             );
         }
 
-        /* Controllo appartenenza delle squadre al torneo */
 
         boolean squadraCasaPresente =
                 torneo.getSquadre()
@@ -110,7 +109,6 @@ public class PartitaService {
             );
         }
 
-        /* Controllo arbitro */
 
         if (partita.getArbitro() == null ||
                 partita.getArbitro().getId() == null) {
@@ -120,7 +118,6 @@ public class PartitaService {
             );
         }
 
-        /* Controllo stato e risultato */
 
         if (partita.getStato() == null ||
                 partita.getStato().isBlank()) {
@@ -167,6 +164,23 @@ public class PartitaService {
 
     @Transactional
     public void deleteById(Long id) {
+
+        Partita partita = findById(id);
+
+        boolean contieneCommenti = commentoRepository.existsByPartitaId(id);
+
+        if (contieneCommenti) {
+
+            throw new IllegalStateException(
+                    "La partita tra "
+                    + partita.getSquadraCasa().getNome()
+                    + " e "
+                    + partita.getSquadraTrasferta().getNome()
+                    + " non può essere eliminata perché "
+                    + "contiene uno o più commenti."
+                );
+        }
+
         partitaRepository.deleteById(id);
     }
 }

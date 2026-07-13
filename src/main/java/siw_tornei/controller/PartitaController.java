@@ -120,11 +120,21 @@ public class PartitaController {
     /* Eliminazione */
 
     @PostMapping("/admin/partita/{id}/delete")
-    public String deletePartita(@PathVariable Long id) {
+    public String deletePartita(@PathVariable Long id, Model model) {
 
-        partitaService.deleteById(id);
+        try {
 
-        return "redirect:/partite";
+            partitaService.deleteById(id);
+
+            return "redirect:/partite";
+
+        } catch (IllegalStateException exception) {
+
+            model.addAttribute("errore", exception.getMessage());
+            model.addAttribute("partite", partitaService.findAll());
+
+            return "partita/list";
+        }
     }
 
     /*
