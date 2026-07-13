@@ -5,15 +5,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 import siw_tornei.model.Arbitro;
 import siw_tornei.repository.ArbitroRepository;
+import siw_tornei.repository.PartitaRepository;
 
 @Service
 @Transactional(readOnly = true)
 public class ArbitroService {
 
     private ArbitroRepository arbitroRepository;
+    private PartitaRepository partitaRepository;
 
-    public ArbitroService(ArbitroRepository arbitroRepository) {
+    public ArbitroService(ArbitroRepository arbitroRepository, PartitaRepository partitaRepository) {
         this.arbitroRepository = arbitroRepository;
+        this.partitaRepository = partitaRepository;
     }
 
     public Iterable<Arbitro> findAll() {
@@ -53,6 +56,23 @@ public class ArbitroService {
 
     @Transactional
     public void deleteById(Long id) {
+
+        Arbitro arbitro = findById(id);
+
+        boolean assegnatoAPartita = partitaRepository.existsByArbitroId(id);
+
+        if (assegnatoAPartita) {
+
+            throw new IllegalStateException(
+                    "L'arbitro "
+                    + arbitro.getNome()
+                    + " "
+                    + arbitro.getCognome()
+                    + " non può essere eliminato perché "
+                    + "è assegnato a una o più partite."
+                );
+        }
+
         arbitroRepository.deleteById(id);
     }
 }

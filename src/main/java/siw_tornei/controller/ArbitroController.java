@@ -56,8 +56,20 @@ public class ArbitroController {
     }
 
     @PostMapping("/admin/arbitro/{id}/delete")
-    public String deleteArbitro(@PathVariable Long id) {
-        arbitroService.deleteById(id);
-        return "redirect:/arbitri";
+    public String deleteArbitro(@PathVariable Long id, Model model) {
+
+        try {
+
+            arbitroService.deleteById(id);
+
+            return "redirect:/arbitri";
+
+        } catch (IllegalStateException exception) {
+
+            model.addAttribute("errore", exception.getMessage());
+            model.addAttribute("arbitri", arbitroService.findAll());
+
+            return "arbitro/list";
+        }
     }
 }

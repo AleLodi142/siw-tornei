@@ -7,6 +7,14 @@
 
     <h1>Arbitri</h1>
 
+    <p
+        th:if="${errore}"
+        th:text="${errore}"
+        style="color: red;">
+
+        Impossibile eliminare l'arbitro.
+    </p>
+    
     <div th:if="${isAdmin}">
         <a th:href="@{/admin/arbitro/form}">
             Inserisci nuovo arbitro

@@ -12,4 +12,6 @@ public interface PartitaRepository extends JpaRepository<Partita, Long> {
     boolean existsBySquadraCasaIdOrSquadraTrasfertaId(Long squadraCasaId, Long squadraTrasfertaId);
 
     boolean existsByTorneoId(Long torneoId);
+
+    boolean existsByArbitroId(Long arbitroId);
 }
